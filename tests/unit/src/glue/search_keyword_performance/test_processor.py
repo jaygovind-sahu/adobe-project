@@ -45,6 +45,7 @@ def test_rank_hit_data_by_time(spark_session):
         ('10.0.0.1', 0, False, True,
          'http://www.website.com/?q=item1', 'some;product;list1'),
         ('10.0.0.1', 0, True, False, 'http://www.google.com/?q=item1', ''),
+        ('10.0.0.1', -1, True, False, 'http://www.google.com/?q=b1', ''),
         ('10.0.0.1', 1, False, True,
          'http://www.website.com/?q=a1', 'some;product;a1'),
         ('10.0.0.1', 1, True, False, 'http://www.bing.com/?q=a1', ''),
@@ -67,6 +68,7 @@ def test_summarize_hit_data(spark_session):
         ('10.0.0.1', 0, False, True,
          'http://www.website.com/?q=item1', 'some;product;list1'),
         ('10.0.0.1', 0, True, False, 'http://www.google.com/?q=item1', ''),
+        ('10.0.0.1', -1, True, False, 'http://www.google.com/?q=b1', ''),
         ('10.0.0.1', 1, False, True,
          'http://www.website.com/?q=a1', 'some;product;a1'),
         ('10.0.0.1', 1, True, False, 'http://www.bing.com/?q=a1', ''),
@@ -84,6 +86,7 @@ def test_summarize_hit_data(spark_session):
     expected_output = spark_session.createDataFrame([
         ('http://www.google.com/?q=item1', 'some;product;list1'),
         ('http://www.bing.com/?q=a1', 'some;product;a1'),
+        ('http://www.google.com/?q=b1', None),
         ('http://www.bing.com/?q=item2', 'some;product;list2'),
         ('http://www.google.com/?q=item3', 'some;product;list3'),
         ('http://www.google.com/?q=item3', 'some;product;list4'),

@@ -67,7 +67,9 @@ def rank_hit_data_by_time(raw_data: DataFrame) -> DataFrame:
         .orderBy(col('hit_time_gmt').desc())
 
     return hit_journeys.withColumn('event_seq_no', row_number().over(window_time)) \
-        .where(col('event_seq_no') == 1) \
+        .withColumn('journey_num', when((col('event_seq_no') != 1) & col('is_search'), -1)
+            .otherwise(col('journey_num'))) \
+        .where((col('event_seq_no') == 1) | col('is_search')) \
         .select(['ip', 'journey_num', 'is_search', 'is_purchase', 'referrer', 'product_list'])
 
 
